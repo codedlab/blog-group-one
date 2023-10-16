@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index js"
   },
-  "author": "Gyebi",
+  "author": "Gyebi, Sammy, Pierre",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
