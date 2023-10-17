@@ -2,12 +2,14 @@ import express from "express";
 import sequelize from "./db/dbConfig.js";
 import bodyParser from "body-parser";
 import postRoute from "./routes/postRoute.js";
+import userouter from "./routes/userRoute.js"
 
 const app = express();
 app.use(bodyParser.json());
 const port = 3000;
 app.use("/post", postRoute);
 app.use("/like", likeroute);
+app.use("/user",userouter)
 
 try {
   await sequelize.authenticate();
