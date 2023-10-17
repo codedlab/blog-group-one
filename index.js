@@ -7,6 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 const port = 3000;
 app.use("/post", postRoute);
+app.use("/like", likeroute);
 
 try {
   await sequelize.authenticate();
