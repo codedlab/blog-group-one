@@ -9,6 +9,4 @@ router.get("/:id", userController.getUser);
 router.get("/", userController.getallUser);
 router.delete("/:id", userController.deleteUser);
 
-
-
 export default router;
