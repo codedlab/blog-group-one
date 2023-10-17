@@ -1,22 +1,18 @@
-import likeModels from '../models/likeModels.js';
-import Op from "sequelize";
+import likeModels from "../models/likeModels.js";
 
 // create like
-const registerlike = async ( req,res ) => {
-    try{
-        const addCourse = req.body;
-        const newlike= await likeModels.create
-        (addCourse);
-        if  (newlike) {
-            return res.status (201).json({message: "succesful", newlike});
-           
-        }
-
-    } catch(error) {
-        console.log(error);
-        return res.status(500).json ({message: "unable to like"});   
+const registerlike = async (req, res) => {
+  try {
+    const addCourse = req.body;
+    const newlike = await likeModels.create(addCourse);
+    if (newlike) {
+      return res.status(201).json({ message: "succesful", newlike });
     }
-}
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "unable to like" });
+  }
+};
 
 // get like
 
@@ -25,7 +21,7 @@ const registerlike = async ( req,res ) => {
 //        const{id} = req.params;
 //        if (!id){
 //         return res.status(409).json({
-//            message:"like not found" 
+//            message:"like not found"
 //         })
 //        }
 //        const like =await likeModels.findOne (id)
@@ -35,7 +31,7 @@ const registerlike = async ( req,res ) => {
 //    }catch(error){
 //     consolee,log(error);
 //     return res. status(500).json({message:"unable to like"})
-    
+
 //    }
 // };
 
@@ -44,30 +40,29 @@ const registerlike = async ( req,res ) => {
 // const getAlllikes = async(req, res)=> {
 //     try{
 //         const likes = await likeModels.findAll()
-        
+
 //         if(!likes){
-//             return res.status(409).json({message: " like not found"});  
+//             return res.status(409).json({message: " like not found"});
 //         }
 //         return res.status(200).json({message:"sucessful",likes})
 // }  catch (error){
 //     console.log(error);
 //     return res. status(500).json({message:"server error" })
 // }
- 
+
 // };
 
 // get all likes by postid
 
-const getAlllikesByPostId = async(req, res) =>{
-    try {
-        const likes = await likeModels.findAll()
-        return res.status(200).json({message:"successful", likes})
-    
-    } catch (error) {
-            console.log(error);
-    return res. status(500).json({message:"server error" })
-    }
-}
+const getAlllikesByPostId = async (req, res) => {
+  try {
+    const likes = await likeModels.findAll();
+    return res.status(200).json({ message: "successful", likes });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "server error" });
+  }
+};
 
 // update like records
 
@@ -88,19 +83,20 @@ const getAlllikesByPostId = async(req, res) =>{
 // }
 // delete like records
 
-const deletelike= async(req,res) =>{
-    const{id} =req.params;
-    try{
-      if (!id) {
-          return res.status(409).json({message:"like not  found"});
-        }
-        const deletedlike = await likeModels.destroy({where:{id}});
-        return res.status(200).json({message: "delete successfully", deletedlike});
+const deletelike = async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (!id) {
+      return res.status(409).json({ message: "like not  found" });
     }
-    catch(error){
-        console.log(error);
-        return res.status(500).json({message: "unable to delete like"})
-    }
-}
+    const deletedlike = await likeModels.destroy({ where: { id } });
+    return res
+      .status(200)
+      .json({ message: "delete successfully", deletedlike });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "unable to delete like" });
+  }
+};
 
-export default {registerlike, getAlllikesByPostId, deletelike}
+export default { registerlike, getAlllikesByPostId, deletelike };
