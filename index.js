@@ -18,7 +18,3 @@ try {
 } catch (error) {
   console.error();
 }
-
-(async () => {
-  await sequelize.sync();
-})();
