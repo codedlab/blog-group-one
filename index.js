@@ -1,8 +1,13 @@
 import express from "express";
 import sequelize from "./db/dbConfig.js";
+import userouter from "./routes/userRoute.js"
+import bodyParser from "body-parser";
 
 const app = express();
-const port = 3000;
+app.use(bodyParser.json())
+const port = 3000 ;
+
+app.use("/user",userouter)
 
 try {
   await sequelize.authenticate();
