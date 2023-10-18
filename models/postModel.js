@@ -1,6 +1,6 @@
 import sequelize from "../db/dbConfig.js";
 import DataTypes from "sequelize";
-import user from "./userModel.js";
+import likeModel from "./likeModel.js";
 
 const post = sequelize.define(
   "posts",
@@ -35,8 +35,11 @@ const post = sequelize.define(
       allowNull: false
       // required: true
     }
-  }
-  // {paranoid:true}
+  },
+  { paranoid: true }
 );
+
+post.hasMany(likeModel, { foreign_key: "post_id" });
+likeModel.belongsTo(post, { foreignKey: "post_id" });
 
 export default post;

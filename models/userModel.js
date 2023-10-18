@@ -1,6 +1,7 @@
 import sequelize from "../db/dbConfig.js";
 import Dataypes from "sequelize";
-import post from "./postModel.js";
+import postModel from "./postModel.js";
+import likeModel from "./likeModel.js";
 
 const user = sequelize.define(
   "users",
@@ -26,9 +27,13 @@ const user = sequelize.define(
         isEmail: true
       }
     }
-  }
-
-  // {paranoid:true}
+  },
+  { paranoid: true }
 );
+
+user.hasMany(postModel, { foreignKey: "user_id" });
+postModel.belongsTo(user, { foreignKey: "user_id" });
+user.hasMany(likeModel, { foreignKey: "user_id" });
+likeModel.belongsTo(user, { foreignKey: "user_id" });
 
 export default user;

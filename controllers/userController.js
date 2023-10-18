@@ -1,4 +1,6 @@
 import userModel from "../models/userModel.js";
+import postModel from "../models/postModel.js";
+import likeModel from "../models/likeModel.js";
 import bcrypt from "bcryptjs";
 
 //signing up for a user or loging
@@ -33,7 +35,10 @@ const registerUser = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const getUser = await userModel.findByPk(id);
+    const getUser = await userModel.findOne({
+      where: { id },
+      include: [{ model: postModel }, { model: likeModel }]
+    });
     if (!getUser) {
       res.status(409).json({ message: "User can not be found" });
       return;
@@ -47,19 +52,35 @@ const getUser = async (req, res) => {
   }
 };
 
+//user login
+
+const loginUser = async (req, res) => {
+  const token = req.token;
+  const userDetails = req.body;
+  const postgroup = await post.findAll({ include: [{ model: user }] });
+  if (userDetails) {
+    res.status(200).json({ message: "login successful", token, postgroup });
+  }
+};
+
 //get all user
 
 const getallUser = async (req, res) => {
   try {
-    const getAllusers = await userModel.findAll();
+    const getAllusers = await userModel.findAll({
+      include: [
+        {
+          model: postModel,
+          include: [{ model: likeModel }]
+        }
+      ]
+    });
     if (getAllusers) {
-      res
-        .status(409)
-        .json({
-          message: "Successfull",
-          data: getAllusers.length,
-          getAllusers
-        });
+      res.status(409).json({
+        message: "Successfull",
+        data: getAllusers.length,
+        getAllusers
+      });
       return;
     }
   } catch (error) {
@@ -116,4 +137,11 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export default { registerUser, getUser, getallUser, updateUser, deleteUser };
+export default {
+  registerUser,
+  getUser,
+  loginUser,
+  getallUser,
+  updateUser,
+  deleteUser
+};
