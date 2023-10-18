@@ -1,4 +1,6 @@
 import postModel from "../models/postModel.js";
+import userModel from "../models/userModel.js";
+import likeModel from "../models/likeModel.js";
 // import { v4 as uuidv4 } from "uuidv4";
 
 //create a post
@@ -36,9 +38,17 @@ const getPost = async (req, res) => {
 
 // get all posts
 
+// {
+//       include: userModel,
+//       attributes: { exclude: ["createdAt", "updatedAt"] }
+//     }
+
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await postModel.findAll();
+    const posts = await postModel.findAll({
+      include: [{ model: userModel, include: [{ model: likeModel }] }],
+      attributes: { exclude: ["createdAt", "updatedAt"] }
+    });
     if (!posts) {
       return res.status(409).json({ message: "Posts not found" });
     }

@@ -24,8 +24,8 @@ const likes = sequelize.define(
         key: "id"
       }
     }
-  }
-  // {paranoid: true}
+  },
+  { paranoid: true }
 );
 
 export default likes;
