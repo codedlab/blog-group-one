@@ -1,7 +1,7 @@
 import sequelize from "../db/dbConfig.js";
 import DataTypes from "sequelize";
 
-const likes = sequelize.define(
+const like = sequelize.define(
   "likes",
   {
     id: {
@@ -10,17 +10,19 @@ const likes = sequelize.define(
       allowNull: false,
       primaryKey: true
     },
-    post_id: {
+    user_id: {
       type: DataTypes.UUID,
-      reference: {
-        model: "posts",
+      defaultValue: DataTypes.UUIDV4,
+      References: {
+        model: "users",
         key: "id"
       }
     },
-    user_id: {
+    post_id: {
       type: DataTypes.UUID,
-      reference: {
-        model: "users",
+      defaultValue: DataTypes.UUIDV4,
+      References: {
+        model: "posts",
         key: "id"
       }
     }
@@ -28,4 +30,4 @@ const likes = sequelize.define(
   { paranoid: true }
 );
 
-export default likes;
+export default like;
