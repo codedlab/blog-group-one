@@ -10,36 +10,32 @@ const post = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false
-      // required: true
-    },
-    user_id: {
-      type: DataTypes.UUID,
-      // required: true
-      references: {
-        model: "users",
-        key: "id"
-      }
     },
     title: {
       type: DataTypes.STRING,
       allowNull: false
-      // required: true
     },
     slug: {
       type: DataTypes.STRING,
       allowNull: false
-      // required: true
     },
     content: {
       type: DataTypes.TEXT,
       allowNull: false
-      // required: true
+    },
+    user_id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      References: {
+        model: "users",
+        key: "id"
+      }
     }
   },
   { paranoid: true }
 );
 
-post.hasMany(likeModel, { foreign_key: "post_id" });
+post.hasMany(likeModel, { foreignKey: "post_id" });
 likeModel.belongsTo(post, { foreignKey: "post_id" });
 
 export default post;

@@ -4,10 +4,10 @@ import bcryptjs from "bcryptjs";
 import dotenv from "dotenv";
 
 dotenv.config();
+const jwtSecret = process.env.ACCESS_TOKEN_SECRET;
 
 const authentication = async (req, res, next) => {
   try {
-    const jwtSecret = process.env.ACCESS_TOKEN_SECRET;
     const loginInfo = req.body;
     const email = loginInfo.email;
     const findUser = await userModel.findOne({ where: { email } });
@@ -21,14 +21,38 @@ const authentication = async (req, res, next) => {
     if (!passwordMatch) {
       return res.status(401).json({ message: "Invalid Credentials" });
     }
-    const userToken = jwt.sign(loginInfo, jwtSecret, { expiresIn: "48hr" });
+    const tokenVariables = {
+      id: findUser.id,
+      email: loginInfo.email,
+      username: loginInfo.username
+    };
+    const userToken = jwt.sign(tokenVariables, jwtSecret, {
+      expiresIn: "48hr"
+    });
     req.token = userToken;
     req.user = findUser;
     next();
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: "Unable to login" });
   }
 };
 
-export default authentication;
+const verifyAuth = async (req, res, next) => {
+  try {
+    const token = req.headers.token;
+    if (!token) {
+      return res.status(401).json({ message: "no token found" });
+    }
+    const decodedToken = jwt.verify(token, jwtSecret);
+    if (decodedToken) {
+      req.userId = decodedToken.id;
+    }
+    next();
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "server error, authentication failed" });
+  }
+};
+
+export default { authentication, verifyAuth };
